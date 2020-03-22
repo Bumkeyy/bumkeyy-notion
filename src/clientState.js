@@ -1,6 +1,16 @@
+import { NOTE_FRAGMENT } from './fragments';
+
 export const defaults = {
-  notes: []
+  notes: [
+    {
+      __typename: 'Note',
+      id: 1,
+      title: 'First',
+      content: 'Second'
+    }
+  ]
 };
+
 export const typeDefs = [
   `
   schema {
@@ -12,8 +22,8 @@ export const typeDefs = [
     note(id: Int!) : Note
   }
   type Mutation {
-    createNote(title: String!, content:String!)
-    editNote(id:String!, title:String!, content: String!)
+    createNote(title: String!, content:String!):Note
+    editNote(id:String!, title:String!, content: String!):Note
   }
   type Note {
     id: Int!
@@ -22,8 +32,16 @@ export const typeDefs = [
   }
   `
 ];
+
 export const resolvers = {
   Query: {
-    notes: () => []
+    note: (_, variables, { cache }) => {
+      const id = cache.config.dataIdFromObject({
+        __typename: 'Note',
+        id: variables.id
+      });
+      const note = cache.readFragment({ fragment: NOTE_FRAGMENT, id });
+      return note;
+    }
   }
 };
