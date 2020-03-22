@@ -1,6 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
+import reset from 'styled-reset';
 
-createGlobalStyle`
+export default createGlobalStyle`
+    ${reset};
     :root {
         --greyColor: #A2A19E;
         --blackColor: #373630;

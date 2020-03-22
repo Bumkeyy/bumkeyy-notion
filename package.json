@@ -15,6 +15,7 @@
     "graphql-tag": "^2.10.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-markdown-renderer": "^1.4.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-textarea-autosize": "^7.1.2",

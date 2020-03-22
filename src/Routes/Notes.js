@@ -77,7 +77,7 @@ export default () => {
       </Header>
       {notes &&
         notes.map((note) => (
-          <Link to={`/edit/${note.id}`} key={note.id}>
+          <Link to={`/note/${note.id}`} key={note.id}>
             <Note>{note.title}</Note>
           </Link>
         ))}
