@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_NOTE } from '../queries';
 import styled from 'styled-components';
-import MarkDownRenderer from 'react-markdown-renderer';
+import ReactMarkdown from 'react-markdown';
 
 const TitleComponent = styled.div`
   display: flex;
@@ -39,7 +39,7 @@ export default ({
           <Button>Edit</Button>
         </Link>
       </TitleComponent>
-      <MarkDownRenderer markdown={note.content} />
+      <ReactMarkdown source={note.content} />
     </>
   );
 };
