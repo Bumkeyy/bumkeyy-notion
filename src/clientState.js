@@ -24,7 +24,7 @@ export const typeDefs = [
   }
   type Mutation {
     createNote(title: String!, content:String!):Note
-    editNote(id:String!, title:String!, content: String!):Note
+    editNote(id:Int!, title:String!, content: String!):Note
   }
   type Note {
     id: Int!
@@ -36,19 +36,18 @@ export const typeDefs = [
 
 export const resolvers = {
   Query: {
-    note: (_, variables, { cache }) => {
-      const id = cache.config.dataIdFromObject({
+    note: (_, { id }, { cache }) => {
+      const noteId = cache.config.dataIdFromObject({
         __typename: 'Note',
-        id: variables.id
+        id
       });
-      const note = cache.readFragment({ fragment: NOTE_FRAGMENT, id });
+      const note = cache.readFragment({ fragment: NOTE_FRAGMENT, id: noteId });
       return note;
     }
   },
   Mutation: {
-    createNote: (_, variables, { cache }) => {
+    createNote: (_, { title, content }, { cache }) => {
       const { notes } = cache.readQuery({ query: GET_NOTES });
-      const { title, content } = variables;
       const newNote = {
         __typename: 'Note',
         title,
@@ -57,10 +56,28 @@ export const resolvers = {
       };
       cache.writeData({
         data: {
-          notes: [newNote, ...notes]
+          notes: [...notes, newNote]
         }
       });
       return newNote;
+    },
+    editNote: (_, { id, title, content }, { cache }) => {
+      const noteId = cache.config.dataIdFromObject({
+        __typename: 'Note',
+        id
+      });
+      const note = cache.readFragment({ fragment: NOTE_FRAGMENT, id: noteId });
+      const updatedNote = {
+        ...note,
+        title,
+        content
+      };
+      cache.writeFragment({
+        id: noteId,
+        fragment: NOTE_FRAGMENT,
+        data: updatedNote
+      });
+      return updatedNote;
     }
   }
 };
