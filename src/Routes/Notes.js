@@ -59,8 +59,11 @@ const NoteTitle = styled.span`
 
 export default () => {
   const {
-    data: { notes }
+    data: { notes },
+    loading
   } = useQuery(GET_NOTES);
+
+  if (loading) return <>Loading...</>;
 
   return (
     <>
@@ -75,12 +78,15 @@ export default () => {
         </Title>
         <Subtitle>Taking notes while we learn.</Subtitle>
       </Header>
-      {notes &&
-        notes.map((note) => (
+      <Notes>
+        {notes.map((note) => (
           <Link to={`/note/${note.id}`} key={note.id}>
-            <Note>{note.title}</Note>
+            <Note>
+              <NoteTitle>{note.title}</NoteTitle>
+            </Note>
           </Link>
         ))}
+      </Notes>
     </>
   );
 };
